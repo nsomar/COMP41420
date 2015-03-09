@@ -183,8 +183,8 @@ class ChessBoard:
         self._ep[0] = 0
         self._ep[1] = 0
 
-    def endGame(self, reason):
-        self._game_result = reason
+    # def endGame(self, reason):
+    #     self._game_result = reason
 
     def checkKingGuard(self, fromPos, moves, specialMoves={}):
         result = []
