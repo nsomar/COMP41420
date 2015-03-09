@@ -171,9 +171,9 @@ class ChessBoard:
     def updateKingLocations(self):
         for y in range(0, 8):
             for x in range(0, 8):
-                if self._board[y][x] == "K":
+                if self._board[y][x] == "KKK":
                     self._white_king_location = (x, y)
-                if self._board[y][x] == "k":
+                if self._board[y][x] == "kkk":
                     self._black_king_location = (x, y)
 
     def setEP(self, epPos):
