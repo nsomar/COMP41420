@@ -10,26 +10,25 @@ from copy import deepcopy
 from pprint import pprint
 
 class ChessBoard:
-
     def __init__(self):
         self.resetBoard()
 
     def state2str(self):
 
-        b = ""
-        for l in self._board:
-            b += "%s%s%s%s%s%s%s%s" % (l[0], l[1], l[2],  l[3], l[4], l[5], l[6], l[7])
+	b = ""
+	for l in self._board:
+		b += "%s%s%s%s%s%s%s%s" % (l[0], l[1], l[2],  l[3], l[4], l[5], l[6], l[7])
 
-        d = (b,
-        self._turn,
-        self._white_king_castle,
-        self._white_queen_castle,
-        self._black_king_castle,
-        self._black_queen_castle,
-        self._ep[0],
-        self._ep[1],
-        self._game_result,
-        self._fifty)
+ 	d = (b,
+ 	self._turn,
+ 	self._white_king_castle,
+	self._white_queen_castle,
+ 	self._black_king_castle,
+  	self._black_queen_castle,
+  	self._ep[0],
+  	self._ep[1],
+ 	self._game_result,
+ 	self._fifty)
 
         #turn,wkc,wqc,bkc,bqc,epx,epy,game_result,fifty
         s = "%s%d%d%d%d%d%d%d%d:%d" % d
