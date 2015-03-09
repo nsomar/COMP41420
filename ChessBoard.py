@@ -84,28 +84,7 @@ class ChessBoard:
     _moves = []
 
     _promotion_value = 0
-    def state2str(self):
-
-	b = ""
-	for l in self._board:
-		b += "%s%s%s%s%s%s%s%s" % (l[0], l[1], l[2],  l[3], l[4], l[5], l[6], l[7])
-
- 	d = (b,
- 	self._turn,
- 	self._white_king_castle,
-	self._white_queen_castle,
- 	self._black_king_castle,
-  	self._black_queen_castle,
-  	self._ep[0],
-  	self._ep[1],
- 	self._game_result,
- 	self._fifty)
-
-        #turn,wkc,wqc,bkc,bqc,epx,epy,game_result,fifty
-        s = "%s%d%d%d%d%d%d%d%d:%d" % d
-
-        return s
-
+    
     def loadCurState(self):
         s = self._state_stack[self._state_stack_pointer-1]
         b= s[:64]
@@ -129,6 +108,28 @@ class ChessBoard:
 
         self._fifty = f
     
+    def state2str(self):
+
+	b = ""
+	for l in self._board:
+		b += "%s%s%s%s%s%s%s%s" % (l[0], l[1], l[2],  l[3], l[4], l[5], l[6], l[7])
+
+ 	d = (b,
+ 	self._turn,
+ 	self._white_king_castle,
+	self._white_queen_castle,
+ 	self._black_king_castle,
+  	self._black_queen_castle,
+  	self._ep[0],
+  	self._ep[1],
+ 	self._game_result,
+ 	self._fifty)
+
+        #turn,wkc,wqc,bkc,bqc,epx,epy,game_result,fifty
+        s = "%s%d%d%d%d%d%d%d%d:%d" % d
+
+        return s
+
     def pushState(self):
 
         if self._state_stack_pointer != len(self._state_stack):
@@ -164,14 +165,6 @@ class ChessBoard:
             return True
         return False
 
-    def updateKingLocations(self):
-        for y in range(0, 8):
-            for x in range(0, 8):
-                if self._board[y][x] == "K":
-                    self._white_king_location = (x, y)
-                if self._board[y][x] == "k":
-                    self._black_king_location = (x, y)
-
     def setEP(self, epPos):
         self._ep[0], self._ep[1] = epPos
 
@@ -181,6 +174,14 @@ class ChessBoard:
 
     def endGame(self, reason):
         self._game_result = reason
+    
+    def updateKingLocations(self):
+        for y in range(0, 8):
+            for x in range(0, 8):
+                if self._board[y][x] == "K":
+                    self._white_king_location = (x, y)
+                if self._board[y][x] == "k":
+                    self._black_king_location = (x, y)
 
     def checkKingGuard(self, fromPos, moves, specialMoves={}):
         result = []
@@ -290,17 +291,6 @@ class ChessBoard:
                     break
         return False
 
-    def hasAnyValidMoves(self, player=None):
-        if player == None:
-            player = self._turn
-
-        for y in range(0, 8):
-            for x in range(0, 8):
-                if self.getColor(x, y) == player:
-                    if len(self.getValidMoves((x, y))):
-                        return True
-        return False
-
     def traceValidMoves(self, fromPos, dirs, maxSteps=8):
         moves = []
         for d in dirs:
@@ -353,6 +343,17 @@ class ChessBoard:
         moves = self.checkKingGuard(fromPos, moves)
 
         return moves
+
+    def hasAnyValidMoves(self, player=None):
+        if player == None:
+            player = self._turn
+
+        for y in range(0, 8):
+            for x in range(0, 8):
+                if self.getColor(x, y) == player:
+                    if len(self.getValidMoves((x, y))):
+                        return True
+        return False
 
     def getValidPawnMoves(self, fromPos):
         moves = []
