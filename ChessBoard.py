@@ -4,6 +4,7 @@
 # ChessBoard v2.05 is created by John Eriksson - http://arainyday.se
 # It's released under the Gnu Public Licence (GPL)
 # Have fun!
+# I will!
 #####################################################################
 
 from copy import deepcopy
