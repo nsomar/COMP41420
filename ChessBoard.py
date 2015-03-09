@@ -176,8 +176,8 @@ class ChessBoard:
                 if self._board[y][x] == "kkk":
                     self._black_king_location = (x, y)
 
-    def setEP(self, epPos):
-        self._ep[0], self._ep[1] = epPos
+    #def setEP(self, epPos):
+    #    self._ep[0], self._ep[1] = epPos
 
     def clearEP(self):
         self._ep[0] = 0
