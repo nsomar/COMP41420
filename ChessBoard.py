@@ -1133,7 +1133,7 @@ class ChessBoard:
 
         return True
 
-    def getLastMoveType(self):
+    def getLastMove(self):
         """
         Returns a value that indicates if the last move was a "special move".
         Returns -1 if no move has been done.
