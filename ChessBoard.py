@@ -14,7 +14,7 @@ from pprint import pprint
 class ChessBoard:
 
     # Color values
-	WHITE = 0
+    WHITE = 0
     BLACK = 1
     NOCOLOR = -1
 
