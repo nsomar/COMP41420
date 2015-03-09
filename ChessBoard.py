@@ -506,7 +506,7 @@ class ChessBoard:
 
         self._fifty = 0
         return True
-
+'''
     def moveKnight(self, fromPos, toPos):
         moves = self.getValidKnightMoves(fromPos)
 
@@ -524,7 +524,7 @@ class ChessBoard:
         self._board[toPos[1]][toPos[0]] = self._board[fromPos[1]][fromPos[0]]
         self._board[fromPos[1]][fromPos[0]] = "."
         return True
-
+'''
     def moveKing(self, fromPos, toPos):
         if self._turn == self.WHITE:
             c_row = 7
