@@ -85,7 +85,7 @@ class ChessBoard:
 
     _promotion_value = 0
 
-    def init(self):
+    def __init__(self):
         self.resetBoard()
 
     def state2str(self):
@@ -140,12 +140,12 @@ class ChessBoard:
             self._three_rep_stack =  self._three_rep_stack[:self._state_stack_pointer]
             self._moves = self._moves[:self._state_stack_pointer-1]
 
-    three_state = [self._white_king_castle,
-        self._white_queen_castle,
-        self._black_king_castle,
-        self._black_queen_castle,
-        deepcopy(self._board),
-        deepcopy(self._ep)]
+        three_state = [self._white_king_castle,
+            self._white_queen_castle,
+            self._black_king_castle,
+            self._black_queen_castle,
+            deepcopy(self._board),
+            deepcopy(self._ep)]
         self._three_rep_stack.append(three_state)
 
         state_str = self.state2str()
@@ -1196,8 +1196,8 @@ class ChessBoard:
             elif self.threeRepetitions():
                 self.endGame(self.THREE_REPETITION_RULE)
 
-        self.pushe()
-        self.push()
+        self.pushState()
+        self.pushMove()
 
         return True
 
@@ -1236,7 +1236,7 @@ class ChessBoard:
         self.undo()
         move = self._moves[self._state_stack_pointer-1]
         res = (move[1], move[2])
-        selfredo()
+        self.redo()
 
         return res
 
@@ -1328,7 +1328,7 @@ class ChessBoard:
         self.redo()
         return res
 
-    def printBoards(self):
+    def printBoard(self):
         """
         Print the current board layout.
         """
