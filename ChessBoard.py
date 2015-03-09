@@ -109,6 +109,7 @@ class ChessBoard:
 
         return s
 
+    # Loads current state of the board
     def loadCurState(self):
         s = self._state_stack[self._state_stack_pointer-1]
         b= s[:64]
