@@ -13,6 +13,77 @@ class ChessBoard:
     def __init__(self):
         self.resetBoard()
 
+	# Color values
+	WHITE = 0
+	BLACK = 1
+	NOCOLOR = -1
+
+	# Promotion values
+	QUEEN = 1
+	ROOK = 2
+	KNIGHT = 3
+	BISHOP = 4
+
+    # Reason values
+    INVALID_MOVE = 1
+    INVALID_COLOR = 2
+    INVALID_FROM_LOCATION = 3
+    INVALID_TO_LOCATION = 4
+    MUST_SET_PROMOTION = 5
+    GAME_IS_OVER = 6
+    AMBIGUOUS_MOVE = 7
+
+    # Result values
+    NO_RESULT = 0
+    WHITE_WIN = 1
+    BLACK_WIN = 2
+    STALEMATE = 3
+    FIFTY_MOVES_RULE = 4
+    THREE_REPETITION_RULE = 5
+
+    # Special moves
+    NORMAL_MOVE = 0
+    EP_MOVE = 1
+    EP_CAPTURE_MOVE = 2
+    PROMOTION_MOVE = 3
+    KING_CASTLE_MOVE = 4
+    QUEEN_CASTLE_MOVE = 5
+
+    # Text move output type
+    AN = 0      # g4-e3
+    SAN = 1     # Bxe3
+    LAN = 2     # Bg4xe3
+
+    _game_result = 0
+    _reason = 0
+
+    # States
+    _turn = WHITE
+    _white_king_castle = True
+    _white_queen_castle = True
+    _black_king_castle = True
+    _black_queen_castle = True
+    _board = None
+    _ep = [0, 0]      # none or the location of the current en pessant pawn
+    _fifty = 0
+
+    _black_king_location = (0, 0)
+    _white_king_location = (0, 0)
+
+    # three rep stack
+    _three_rep_stack = []
+
+    # full state stack
+    _state_stack = []
+    _state_stack_pointer = 0
+
+    # all moves, stored to make it easier to build textmoves
+    #[piece,from,to,takes,promotion,check/checkmate,specialmove]
+    #["KQRNBP",(fx,fy),(tx,ty),True/False,"QRNB"/None,"+#"/None,0-5]
+    _cur_move = [None, None, None, False, None, None, 0]
+    _moves = []
+
+    _promotion_value = 0
     #----------------------------------------------------------------------------
     # PUBLIC METHODS
     #----------------------------------------------------------------------------
@@ -1261,74 +1332,3 @@ class ChessBoard:
         return res
 
 
-    # Color values
-    WHITE = 0
-    BLACK = 1
-    NOCOLOR = -1
-
-    # Promotion values
-    QUEEN = 1
-    ROOK = 2
-    KNIGHT = 3
-    BISHOP = 4
-
-    # Reason values
-    INVALID_MOVE = 1
-    INVALID_COLOR = 2
-    INVALID_FROM_LOCATION = 3
-    INVALID_TO_LOCATION = 4
-    MUST_SET_PROMOTION = 5
-    GAME_IS_OVER = 6
-    AMBIGUOUS_MOVE = 7
-
-    # Result values
-    NO_RESULT = 0
-    WHITE_WIN = 1
-    BLACK_WIN = 2
-    STALEMATE = 3
-    FIFTY_MOVES_RULE = 4
-    THREE_REPETITION_RULE = 5
-
-    # Special moves
-    NORMAL_MOVE = 0
-    EP_MOVE = 1
-    EP_CAPTURE_MOVE = 2
-    PROMOTION_MOVE = 3
-    KING_CASTLE_MOVE = 4
-    QUEEN_CASTLE_MOVE = 5
-
-    # Text move output type
-    AN = 0      # g4-e3
-    SAN = 1     # Bxe3
-    LAN = 2     # Bg4xe3
-
-    _game_result = 0
-    _reason = 0
-
-    # States
-    _turn = WHITE
-    _white_king_castle = True
-    _white_queen_castle = True
-    _black_king_castle = True
-    _black_queen_castle = True
-    _board = None
-    _ep = [0, 0]      # none or the location of the current en pessant pawn
-    _fifty = 0
-
-    _black_king_location = (0, 0)
-    _white_king_location = (0, 0)
-
-    # three rep stack
-    _three_rep_stack = []
-
-    # full state stack
-    _state_stack = []
-    _state_stack_pointer = 0
-
-    # all moves, stored to make it easier to build textmoves
-    #[piece,from,to,takes,promotion,check/checkmate,specialmove]
-    #["KQRNBP",(fx,fy),(tx,ty),True/False,"QRNB"/None,"+#"/None,0-5]
-    _cur_move = [None, None, None, False, None, None, 0]
-    _moves = []
-
-    _promotion_value = 0
