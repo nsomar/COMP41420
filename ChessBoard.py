@@ -13,7 +13,7 @@ from pprint import pprint
 class ChessBoard:
 
     # Color values
-    WHITE = 0
+	WHITE = 0
     BLACK = 1
     NOCOLOR = -1
 
@@ -84,7 +84,7 @@ class ChessBoard:
 
     _promotion_value = 0
 
-    def __init__(self):
+    def init(self):
         self.resetBoard()
 
     def state2str(self):
@@ -139,12 +139,12 @@ class ChessBoard:
             self._three_rep_stack =  self._three_rep_stack[:self._state_stack_pointer]
             self._moves = self._moves[:self._state_stack_pointer-1]
 
-        three_state = [self._white_king_castle,
-            self._white_queen_castle,
-            self._black_king_castle,
-            self._black_queen_castle,
-            deepcopy(self._board),
-            deepcopy(self._ep)]
+    three_state = [self._white_king_castle,
+        self._white_queen_castle,
+        self._black_king_castle,
+        self._black_queen_castle,
+        deepcopy(self._board),
+        deepcopy(self._ep)]
         self._three_rep_stack.append(three_state)
 
         state_str = self.state2str()
@@ -1195,8 +1195,8 @@ class ChessBoard:
             elif self.threeRepetitions():
                 self.endGame(self.THREE_REPETITION_RULE)
 
-        self.pushState()
-        self.pushMove()
+        self.pushe()
+        self.push()
 
         return True
 
@@ -1235,7 +1235,7 @@ class ChessBoard:
         self.undo()
         move = self._moves[self._state_stack_pointer-1]
         res = (move[1], move[2])
-        self.redo()
+        selfredo()
 
         return res
 
@@ -1327,7 +1327,7 @@ class ChessBoard:
         self.redo()
         return res
 
-    def printBoard(self):
+    def printBoards(self):
         """
         Print the current board layout.
         """
