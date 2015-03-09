@@ -1313,12 +1313,12 @@ class ChessBoard:
 
         return res
 
-    def getLastTextMove(self, format=1):
+    def get_last_text_move(self, format=1):
         """
         Returns the latest move as Algebraic chess notation.
         Returns None if no moves has been made.
         """
-        if self._state_stack_pointer<=1: # No move has been done at thos pointer
+        if self._state_stack_pointer <= 1: # No move has been done at thos pointer
             return None
 
         self.undo()
@@ -1327,7 +1327,7 @@ class ChessBoard:
         self.redo()
         return res
 
-    def printBoard(self):
+    def print_board(self):
         """
         Print the current board layout.
         """
@@ -1339,7 +1339,7 @@ class ChessBoard:
         print "  +-----------------+"
         print "    A B C D E F G H"
 
-    def printLastTextMove(self, format=1):
+    def printLas∂tTextMove(self, format=1):
         """
         Prints the latest move as Algebraic chess notation.
         Print None if no moves has been made.
