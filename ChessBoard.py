@@ -937,6 +937,7 @@ class ChessBoard:
         """
         return len(self._state_stack)-1
 
+    # Add some comment - Lucy
     def getCurrentMove(self):
         """
         Returns the current halfmove number. Zero (0) means before first move.
