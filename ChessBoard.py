@@ -4,13 +4,11 @@
 # ChessBoard v2.05 is created by John Eriksson - http://arainyday.se
 # It's released under the Gnu Public Licence (GPL)
 # Have fun!
-# I will!
 #####################################################################
 
 from copy import deepcopy
 from pprint import pprint
 
-# Some comments
 class ChessBoard:
 
     def __init__(self):
@@ -61,7 +59,6 @@ class ChessBoard:
 
         self._fifty = f
     
-    # More comments
     def pushState(self):
 
         if self._state_stack_pointer != len(self._state_stack):
@@ -170,7 +167,6 @@ class ChessBoard:
         elif self._board[y][x].islower():
             return self.BLACK
 
-    # TODO: Do we need this?
     def isThreatened(self, lx, ly, player=None):
 
         if player == None:
@@ -235,8 +231,6 @@ class ChessBoard:
                         return True
         return False
 
-    #-----------------------------------------------------------------
-
     def traceValidMoves(self, fromPos, dirs, maxSteps=8):
         moves = []
         for d in dirs:
@@ -280,7 +274,6 @@ class ChessBoard:
 
         return moves
 
-    # TODO: To remove
     def getValidBishopMoves(self, fromPos):
         moves = []
         dirs = [(1, 1), (-1, 1), (1, -1), (-1, -1) ]
@@ -385,9 +378,6 @@ class ChessBoard:
 
         return (moves, specialMoves)
 
-    # -----------------------------------------------------------------------------------
-
-    # POSSIBLY BUGGED !!!!
     def movePawn(self, fromPos, toPos):
         moves, specialMoves = self.getValidPawnMoves(fromPos)
 
