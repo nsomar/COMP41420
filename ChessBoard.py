@@ -10,7 +10,7 @@
 from copy import deepcopy
 from pprint import pprint
 
-
+# Some comments
 class ChessBoard:
 
     # Color values
@@ -132,7 +132,8 @@ class ChessBoard:
         self._game_result           = int(v[7])
 
         self._fifty = f
-
+    
+    # More comments
     def pushState(self):
 
         if self._state_stack_pointer != len(self._state_stack):
@@ -241,6 +242,7 @@ class ChessBoard:
         elif self._board[y][x].islower():
             return self.BLACK
 
+    # TODO: Do we need this?
     def isThreatened(self, lx, ly, player=None):
 
         if player == None:
@@ -350,6 +352,7 @@ class ChessBoard:
 
         return moves
 
+    # TODO: To remove
     def getValidBishopMoves(self, fromPos):
         moves = []
         dirs = [(1, 1), (-1, 1), (1, -1), (-1, -1) ]
@@ -456,6 +459,7 @@ class ChessBoard:
 
     # -----------------------------------------------------------------------------------
 
+    # POSSIBLY BUGGED !!!!
     def movePawn(self, fromPos, toPos):
         moves, specialMoves = self.getValidPawnMoves(fromPos)
 
