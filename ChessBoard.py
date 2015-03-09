@@ -936,6 +936,9 @@ class ChessBoard:
         """
         return len(self._state_stack)-1
 
+        """
+        comments added by Luxin
+        """
     def getCurrentMove(self):
         """
         Returns the current halfmove number. Zero (0) means before first move.
@@ -1167,6 +1170,10 @@ class ChessBoard:
                 return False
         elif p == 'N':
             if not self.moveKnight((fx, fy), (tx, ty)):
+                self._reason = self.INVALID_MOVE
+                return False
+        elif p == 'M':
+           if not self.moveKnight((fx, fy), (tx, ty)):
                 self._reason = self.INVALID_MOVE
                 return False
         else:
