@@ -752,7 +752,7 @@ class ChessBoard:
                 check = ""
             res = "%s%s%s%s%s%s%s%s" % (
                 piece, files[fpos[0]], ranks[fpos[1]], tc, files[tpos[0]], ranks[tpos[1]], pt, check)
-        elif format == self.SAN:
+        elif text_format == self.SAN:
 
             if special == self.KING_CASTLE_MOVE:
                 return "O-O"

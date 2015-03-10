@@ -22,16 +22,16 @@ class CagriTests(unittest.TestCase):
     # At the start of the game the board is at its initial state
     # Hence, it returns true for the check at (4,2) and false on others
     def test_if_target_free(self):
-        assert self.cb.isFree(4, 2)
-        assert not self.cb.isFree(1, 1)
-        assert not self.cb.isFree(7, 7)
+        assert self.cb.is_free(4, 2)
+        assert not self.cb.is_free(1, 1)
+        assert not self.cb.is_free(7, 7)
 
     # At the initial state of the game turn is on the WHITE player
     # 7,7 belongs to the WHITE so it returns true while 1,1 belongs to
     # BLACK and returns false
     def test_if_piece_correct_color(self):
-        assert not (self.cb.getColor(1, 1) == self.cb._turn)
-        assert (self.cb.getColor(7, 7) == self.cb._turn)
+        assert not (self.cb.get_color(1, 1) == self.cb._turn)
+        assert (self.cb.get_color(7, 7) == self.cb._turn)
 
     # This should be false at the beginning as its an ending condition
     def test_if_fifty_rule_matches(self):
@@ -39,7 +39,7 @@ class CagriTests(unittest.TestCase):
 
     # This should be false at the beginning as its an ending condition
     def test_three_repetitions(self):
-        assert not self.cb.threeRepetitions()
+        assert not self.cb.three_repetitions()
 
     # Testing movement of a white pawn from c2 to c3
     def test_move_pawn(self):
