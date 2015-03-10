@@ -2,7 +2,7 @@ import unittest
 from ChessBoard import ChessBoard
 
 class MyChessBoard(ChessBoard):
-    def addMove(self, fromPos, toPos):
+    def add_move(self, fromPos, toPos):
         self.called_from_pos = fromPos
         self.called_to_pos = toPos
 
