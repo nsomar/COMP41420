@@ -300,7 +300,7 @@ class ChessBoard:
         for y in range(0, 8):
             for x in range(0, 8):
                 if self.getColor(x, y) == player:
-                    if len(self.getValidMoves((x, y))):
+                    if len(self.get_valid_moves((x, y))):
                         return True
         return False
 
@@ -648,7 +648,7 @@ class ChessBoard:
         self._board[fromPos[1]][fromPos[0]] = "."
         return True
 
-    def _parseTextMove(self, txt):
+    def _parse_text_move(self, txt):
 
         txt = txt.strip()
         promotion = None
@@ -776,7 +776,7 @@ class ChessBoard:
                     if self._board[y][x] == p:
                         if x == fx and y == fy:
                             continue
-                        vm = self.getValidMoves((x, y))
+                        vm = self.get_valid_moves((x, y))
                         if tpos in vm:
                             if fx == x:
                                 hint_r = ranks[fy]
@@ -788,7 +788,7 @@ class ChessBoard:
         return res
 
     #----------------------------------------------------------------------------
-    # addMoveTHODS
+    # PUBLIC METHODS
     #----------------------------------------------------------------------------
 
     def resetBoard(self):
@@ -992,7 +992,7 @@ class ChessBoard:
         self.loadCurState()
         return True
 
-    def setPromotion(self, promotion):
+    def set_promotion(self, promotion):
         """
         Tell the chessboard how to promote a pawn.
         1=QUEEN, 2=ROOK, 3=KNIGHT, 4=BISHOP
@@ -1050,12 +1050,12 @@ class ChessBoard:
 
     def getReason(self):
         """
-        Returns the reason to why addMove returned False.
+        Returns the reason to why add_move returned False.
         1=INAVLID_MOVE,2=INVALID_COLOR,3=INVALID_FROM_LOCATION,4=INVALID_TO_LOCATION,5=MUST_SET_PROMOTION,5=GAME_IS_OVER
         """
         return self._reason
 
-    def getValidMoves(self,location):
+    def get_valid_moves(self,location):
         """
         Returns a list of valid moves. (ex [ [3,4], [3, 5], [3, 6] ... ] ) If there isn't a valid piece on that location or the piece on the selected
         location hasn't got any valid moves an empty list is returned.
@@ -1092,7 +1092,7 @@ class ChessBoard:
         else:
             return []
 
-    def addMove(self, fromPos, toPos):
+    def add_move(self, fromPos, toPos):
         """
         Tries to move the piece located om fromPos to toPos. Returns True if that was a valid move.
         The position arguments must be tuples containing x, y value Ex. (4, 6).
@@ -1224,12 +1224,12 @@ class ChessBoard:
 
     def getLastMove(self):
         """
-        Returns a tupple containing two tupples describing the move just made using the internal coordinates.
+        Returns a tuple containing two tuples describing the move just made using the internal coordinates.
         In the format ((from_x, from_y), (to_x, to_y))
         Ex. ((4, 6), (4, 4))
         Returns None if no moves has been made.
         """
-        if self._state_stack_pointer<=1: # No move has been done at thos pointer
+        if self._state_stack_pointer <= 1:  # No move has been done at that pointer
             return None
 
         self.undo()
@@ -1239,14 +1239,15 @@ class ChessBoard:
 
         return res
 
-    def addTextMove(self, txt):
+    def add_text_move(self, txt):
         """
         Adds a move using several different standards of the Algebraic chess notation.
         AN Examples: 'e2e4' 'f1d1' 'd7-d8' 'g1-f3'
         SAN Examples: 'e4' 'Rfxd1' 'd8=Q' 'Nxf3+'
         LAN Examples: 'Pe2e4' 'Rf1xd1' 'Pd7d8=Q' 'Ng1xf3+'
         """
-        res = self._parseTextMove(txt)
+        res = self._parse_text_move(txt)
+
         if not res:
             self._reason = self.INVALID_MOVE
             return False
@@ -1254,11 +1255,17 @@ class ChessBoard:
             piece, fx, fy, tx, ty, promo = res
 
         if promo:
-            self.setPromotion(promo)
+            self.set_promotion(promo)
 
         if not piece:
-            return self.addMove((fx, fy), (tx, ty))
+            return self.add_move((fx, fy), (tx, ty))
 
+        return self.handle_incomplete_move(res)
+
+    # This method seems to be unused or at least ineffective
+    # Can be removed if it is indeed unnecessary
+    def handle_incomplete_move(self, res):
+        piece, fx, fy, tx, ty, promo = res
         if self._turn == self.BLACK:
             piece = piece.lower()
 
@@ -1270,9 +1277,11 @@ class ChessBoard:
                 if self._board[y][x] == piece:
                     if fx > -1 and fx != x:
                         continue
+
                     if fy > -1 and fy != y:
                         continue
-                    vm = self.getValidMoves((x, y))
+
+                    vm = self.get_valid_moves((x, y))
                     for m in vm:
                         if m[0] == tx and m[1] == ty:
                             if found_move:
@@ -1283,17 +1292,18 @@ class ChessBoard:
                             move_to = (tx, ty)
 
         if found_move:
-            return self.addMove(move_from, move_to)
+            return self.add_move(move_from, move_to)
 
         self._reason = self.INVALID_MOVE
         return False
+
 
     def getAllTextMoves(self, format=1):
         """
         Returns a list of all moves done so far in Algebraic chess notation.
         Returns None if no moves has been made.
         """
-        if self._state_stack_pointer<=1: # No move has been done at this pointer
+        if self._state_stack_pointer <= 1:  # No move has been done at this pointer
             return None
 
         res = []
@@ -1318,7 +1328,7 @@ class ChessBoard:
         Returns the latest move as Algebraic chess notation.
         Returns None if no moves has been made.
         """
-        if self._state_stack_pointer<=1: # No move has been done at thos pointer
+        if self._state_stack_pointer <= 1:  # No move has been done at thos pointer
             return None
 
         self.undo()
@@ -1344,7 +1354,7 @@ class ChessBoard:
         Prints the latest move as Algebraic chess notation.
         Print None if no moves has been made.
         """
-        if self._state_stack_pointer<=1: # No move has been done at this pointer
+        if self._state_stack_pointer <= 1:  # No move has been done at this pointer
            print 'Changed'
 
         self.undo()
@@ -1356,17 +1366,17 @@ class ChessBoard:
 if __name__ == "__main__":
     cb = ChessBoard()
     cb.printBoard()
-    cb.addTextMove('e2e4')
+    cb.add_text_move('e2e4')
     cb.printBoard()
-    cb.addTextMove('f7f5')
+    cb.add_text_move('f7f5')
     cb.printBoard()
-    cb.addTextMove('e4f5')
+    cb.add_text_move('e4f5')
     cb.printBoard()
-    cb.addTextMove('g8h6')
+    cb.add_text_move('g8h6')
     cb.printBoard()
-    cb.addTextMove('f1d3')
+    cb.add_text_move('f1d3')
     cb.printBoard()
-    cb.addTextMove('h6f5')
+    cb.add_text_move('h6f5')
     cb.printBoard()
-    cb.addTextMove('d3f5')
+    cb.add_text_move('d3f5')
     cb.printBoard()
