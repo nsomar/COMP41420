@@ -329,7 +329,7 @@ class ChessBoard:
                     break
         return moves
 
-    def getValidQueenMoves(self, fromPos):
+    def get_valid_queen_moves(self, fromPos):
         moves = []
         dirs = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1) ]
 
@@ -339,7 +339,7 @@ class ChessBoard:
 
         return moves
 
-    def getValidRookMoves(self, fromPos):
+    def get_valid_rook_moves(self, fromPos):
         moves = []
         dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
@@ -349,7 +349,7 @@ class ChessBoard:
 
         return moves
 
-    def getValidBishopMoves(self, fromPos):
+    def get_valid_bishop_moves(self, fromPos):
         moves = []
         dirs = [(1, 1), (-1, 1), (1, -1), (-1, -1) ]
 
@@ -359,7 +359,7 @@ class ChessBoard:
 
         return moves
 
-    def getValidPawnMoves(self, fromPos):
+    def get_valid_pawn_moves(self, fromPos):
         moves = []
         specialMoves = {}
         fx, fy = fromPos
@@ -399,7 +399,7 @@ class ChessBoard:
 
         return (moves, specialMoves)
 
-    def getValidKnightMoves(self, fromPos):
+    def get_valid_knight_moves(self, fromPos):
         moves = []
         fx, fy = fromPos
         m =[(fx+1, fy+2), (fx+2, fy+1), (fx+2, fy-1), (fx+1, fy-2), (fx-1, fy+2), (fx-2, fy+1), (fx-1, fy-2), (fx-2, fy-1)]
@@ -412,7 +412,7 @@ class ChessBoard:
 
         return moves
 
-    def getValidKingMoves(self, fromPos):
+    def get_valid_king_moves(self, fromPos):
         moves = []
         specialMoves={}
 
@@ -456,7 +456,7 @@ class ChessBoard:
     # -----------------------------------------------------------------------------------
 
     def movePawn(self, fromPos, toPos):
-        moves, specialMoves = self.getValidPawnMoves(fromPos)
+        moves, specialMoves = self.get_valid_pawn_moves(fromPos)
 
         if not toPos in moves:
             return False
@@ -507,7 +507,7 @@ class ChessBoard:
         return True
 
     def moveKnight(self, fromPos, toPos):
-        moves = self.getValidKnightMoves(fromPos)
+        moves = self.get_valid_knight_moves(fromPos)
 
         if not toPos in moves:
             return False
@@ -534,7 +534,7 @@ class ChessBoard:
             k = "k"
             r = "r"
 
-        moves, specialMoves = self.getValidKingMoves(fromPos)
+        moves, specialMoves = self.get_valid_king_moves(fromPos)
 
         if specialMoves.has_key(toPos):
             t = specialMoves[toPos]
@@ -582,7 +582,7 @@ class ChessBoard:
 
     def moveQueen(self, fromPos, toPos):
 
-        moves = self.getValidQueenMoves(fromPos)
+        moves = self.get_valid_queen_moves(fromPos)
 
         if not toPos in moves:
             return False
@@ -600,7 +600,7 @@ class ChessBoard:
         return True
 
     def moveBishop(self, fromPos, toPos):
-        moves = self.getValidBishopMoves(fromPos)
+        moves = self.get_valid_bishop_moves(fromPos)
 
         if not toPos in moves:
             return False
@@ -619,7 +619,7 @@ class ChessBoard:
 
     def moveRook(self, fromPos, toPos):
 
-        moves = self.getValidRookMoves(fromPos)
+        moves = self.get_valid_rook_moves(fromPos)
 
         if not toPos in moves:
             return False
@@ -1076,19 +1076,19 @@ class ChessBoard:
 
         p = self._board[y][x].upper()
         if p == 'P':
-            m, s = self.getValidPawnMoves(location)
+            m, s = self.get_valid_pawn_moves(location)
             return m
         elif p == 'R':
-            return self.getValidRookMoves(location)
+            return self.get_valid_rook_moves(location)
         elif p == 'B':
-            return self.getValidBishopMoves(location)
+            return self.get_valid_bishop_moves(location)
         elif p == 'Q':
-            return self.getValidQueenMoves(location)
+            return self.get_valid_queen_moves(location)
         elif p == 'K':
-            m, s = self.getValidKingMoves(location)
+            m, s = self.get_valid_king_moves(location)
             return m
         elif p == 'N':
-            return self.getValidKnightMoves(location)
+            return self.get_valid_knight_moves(location)
         else:
             return []
 
