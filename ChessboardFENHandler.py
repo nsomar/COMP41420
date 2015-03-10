@@ -49,7 +49,7 @@ class ChessboardFENHandler(object):
 
         chessboard._state_stack.append(newstate)
         chessboard._state_stack_pointer = 1
-        chessboard.loadCurState()
+        chessboard.load_cur_state()
 
         three_state = [chessboard._white_king_castle,
             chessboard._white_queen_castle,
@@ -60,7 +60,7 @@ class ChessboardFENHandler(object):
 
         chessboard._three_rep_stack.append(three_state)
 
-        chessboard.updateKingLocations()
+        chessboard.update_king_locations()
 
     @staticmethod
     def generate_fen_code(chessboard):
