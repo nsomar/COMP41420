@@ -57,10 +57,9 @@ class FENTests(unittest.TestCase):
 
     def test_that_it_set_fen_for_e3e4(self):
         assert self.cb._board[6][4] == "P"
-        print self.cb._board[4][5] == "."
+        assert self.cb._board[4][5] == "."
         self.cb.set_fen_code("rnbqkbnr/1ppppppp/8/p7/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2")
         # after moving
-        print self.cb._board[4][5] == "P"
         assert self.cb._board[1][0] == "."
 
     def test_that_it_sets_correct_fen_for_pawn_eating_pawn(self):

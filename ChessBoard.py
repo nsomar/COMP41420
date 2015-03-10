@@ -74,16 +74,16 @@ class ChessBoard:
     _state_stack = []
     _state_stack_pointer = 0
 
-    # all moves, stored to make it easier to build textmoves
-    #[piece,from,to,takes,promotion,check/checkmate,specialmove]
-    #["KQRNBP",(fx,fy),(tx,ty),True/False,"QRNB"/None,"+#"/None,0-5]
+    # all moves, stored to make it easier to build text moves
+    # [piece,from,to,takes,promotion,check/checkmate,special move]
+    # ["KQRNBP",(fx,fy),(tx,ty),True/False,"QRNB"/None,"+#"/None,0-5]
     _cur_move = [None, None, None, False, None, None, 0]
     _moves = []
 
     _promotion_value = 0
 
     def __init__(self):
-        self.resetBoard()
+        self.reset_board()
 
     def state2str(self):
 
@@ -102,7 +102,7 @@ class ChessBoard:
              self._game_result,
              self._fifty)
 
-        #turn,wkc,wqc,bkc,bqc,epx,epy,game_result,fifty
+        # turn,wkc,wqc,bkc,bqc,epx,epy,game_result,fifty
         s = "%s%d%d%d%d%d%d%d%d:%d" % d
 
         return s
@@ -173,8 +173,8 @@ class ChessBoard:
                 if self._board[y][x] == "k":
                     self._black_king_location = (x, y)
 
-    def set_ep(self, epPos):
-        self._ep[0], self._ep[1] = epPos
+    def set_ep(self, ep_pos):
+        self._ep[0], self._ep[1] = ep_pos
 
     def clear_ep(self):
         self._ep[0] = 0
@@ -257,7 +257,7 @@ class ChessBoard:
         m = [(lx + 1, ly + 2), (lx + 2, ly + 1), (lx + 2, ly - 1), (lx + 1, ly - 2), (lx - 1, ly + 2), (lx - 2, ly + 1),
              (lx - 1, ly - 2), (lx - 2, ly - 1)]
         for p in m:
-            if p[0] >= 0 and p[0] <= 7 and p[1] >= 0 and p[1] <= 7:
+            if (p[0] >= 0) and (p[0] <= 7) and (p[1] >= 0) and (p[1] <= 7):
                 if self._board[p[1]][p[0]] == "n" and player == self.WHITE:
                     return True
                 elif self._board[p[1]][p[0]] == "N" and player == self.BLACK:
@@ -293,7 +293,7 @@ class ChessBoard:
         return False
 
     def has_any_valid_moves(self, player=None):
-        if player == None:
+        if player is None:
             player = self._turn
 
         for y in range(0, 8):
@@ -303,7 +303,7 @@ class ChessBoard:
                         return True
         return False
 
-    #-----------------------------------------------------------------
+    # -----------------------------------------------------------------
 
     def trace_valid_moves(self, from_pos, dirs, maxSteps=8):
         moves = []
@@ -329,33 +329,21 @@ class ChessBoard:
         return moves
 
     def get_valid_queen_moves(self, from_pos):
-        moves = []
         dirs = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
-
         moves = self.trace_valid_moves(from_pos, dirs)
-
         moves = self.check_king_guard(from_pos, moves)
-
         return moves
 
     def get_valid_rook_moves(self, from_pos):
-        moves = []
         dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-
         moves = self.trace_valid_moves(from_pos, dirs)
-
         moves = self.check_king_guard(from_pos, moves)
-
         return moves
 
     def get_valid_bishop_moves(self, from_pos):
-        moves = []
         dirs = [(1, 1), (-1, 1), (1, -1), (-1, -1)]
-
         moves = self.trace_valid_moves(from_pos, dirs)
-
         moves = self.check_king_guard(from_pos, moves)
-
         return moves
 
     def get_valid_pawn_moves(self, from_pos):
@@ -404,7 +392,7 @@ class ChessBoard:
         m = [(fx + 1, fy + 2), (fx + 2, fy + 1), (fx + 2, fy - 1), (fx + 1, fy - 2), (fx - 1, fy + 2), (fx - 2, fy + 1),
              (fx - 1, fy - 2), (fx - 2, fy - 1)]
         for p in m:
-            if p[0] >= 0 and p[0] <= 7 and p[1] >= 0 and p[1] <= 7:
+            if (p[0] >= 0) and (p[0] <= 7) and (p[1] >= 0) and (p[1] <= 7):
                 if self.get_color(p[0], p[1]) != self._turn:
                     moves.append(p)
 
@@ -413,7 +401,6 @@ class ChessBoard:
         return moves
 
     def get_valid_king_moves(self, from_pos):
-        moves = []
         special_moves = {}
 
         if self._turn == self.WHITE:
@@ -509,25 +496,25 @@ class ChessBoard:
         self._fifty = 0
         return True
 
-    def move_knight(self, from_pos, toPos):
+    def move_knight(self, from_pos, to_pos):
         moves = self.get_valid_knight_moves(from_pos)
 
-        if not toPos in moves:
+        if to_pos not in moves:
             return False
 
         self.clear_ep()
 
-        if self._board[toPos[1]][toPos[0]] == ".":
+        if self._board[to_pos[1]][to_pos[0]] == ".":
             self._fifty += 1
         else:
             self._fifty = 0
             self._cur_move[3] = True
 
-        self._board[toPos[1]][toPos[0]] = self._board[from_pos[1]][from_pos[0]]
+        self._board[to_pos[1]][to_pos[0]] = self._board[from_pos[1]][from_pos[0]]
         self._board[from_pos[1]][from_pos[0]] = "."
         return True
 
-    def move_king(self, from_pos, toPos):
+    def move_king(self, from_pos, to_pos):
         if self._turn == self.WHITE:
             c_row = 7
             k = "K"
@@ -539,12 +526,12 @@ class ChessBoard:
 
         moves, special_moves = self.get_valid_king_moves(from_pos)
 
-        if special_moves.has_key(toPos):
-            t = special_moves[toPos]
+        if special_moves.has_key(to_pos):
+            t = special_moves[to_pos]
         else:
             t = 0
 
-        if not toPos in moves:
+        if to_pos not in moves:
             return False
 
         self.clear_ep()
@@ -571,13 +558,13 @@ class ChessBoard:
             self._board[c_row][3] = r
             self._cur_move[6] = self.QUEEN_CASTLE_MOVE
         else:
-            if self._board[toPos[1]][toPos[0]] == ".":
+            if self._board[to_pos[1]][to_pos[0]] == ".":
                 self._fifty += 1
             else:
                 self._fifty = 0
                 self._cur_move[3] = True
 
-            self._board[toPos[1]][toPos[0]] = self._board[from_pos[1]][from_pos[0]]
+            self._board[to_pos[1]][to_pos[0]] = self._board[from_pos[1]][from_pos[0]]
             self._board[from_pos[1]][from_pos[0]] = "."
 
         self.update_king_locations()
@@ -605,7 +592,7 @@ class ChessBoard:
     def move_bishop(self, from_pos, toPos):
         moves = self.get_valid_bishop_moves(from_pos)
 
-        if not toPos in moves:
+        if toPos not in moves:
             return False
 
         self.clear_ep()
@@ -624,7 +611,7 @@ class ChessBoard:
 
         moves = self.get_valid_rook_moves(from_pos)
 
-        if not toPos in moves:
+        if toPos not in moves:
             return False
 
         fx, fy = from_pos
@@ -655,8 +642,6 @@ class ChessBoard:
 
         txt = txt.strip()
         promotion = None
-        dest_x = 0
-        dest_y = 0
         h_piece = "P"
         h_rank = -1
         h_file = -1
@@ -664,19 +649,19 @@ class ChessBoard:
         # handle the special
         if txt == "O-O":
             if self._turn == 0:
-                return (None, 4, 7, 6, 7, None)
+                return None, 4, 7, 6, 7, None
             if self._turn == 1:
-                return (None, 4, 0, 6, 0, None)
+                return None, 4, 0, 6, 0, None
         if txt == "O-O-O":
             if self._turn == 0:
-                return (None, 4, 7, 2, 7, None)
+                return None, 4, 7, 2, 7, None
             if self._turn == 1:
-                return (None, 4, 0, 2, 0, None)
+                return None, 4, 0, 2, 0, None
 
         files = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
         ranks = {"8": 0, "7": 1, "6": 2, "5": 3, "4": 4, "3": 5, "2": 6, "1": 7}
 
-        # Clean up the textmove
+        # Clean up the text move
         "".join(txt.split("e.p."))
         t = []
         for ch in txt:
@@ -719,7 +704,7 @@ class ChessBoard:
         return (h_piece, h_file, h_rank, dest_x, dest_y, promotion)
 
     def _formatTextMove(self, move, text_format):
-        #piece, from, to, take, promotion, check
+        # piece, from, to, take, promotion, check
 
         piece = move[0]
         fpos = tuple(move[1])
@@ -794,11 +779,11 @@ class ChessBoard:
     def has_previous_moves(self):
         return self._state_stack_pointer <= 1
 
-    #----------------------------------------------------------------------------
+    # ----------------------------------------------------------------------------
     # PUBLIC METHODS
-    #----------------------------------------------------------------------------
+    # ----------------------------------------------------------------------------
 
-    def resetBoard(self):
+    def reset_board(self):
         """
         Resets the chess board and all states.
         """
@@ -835,20 +820,20 @@ class ChessBoard:
 
     def get_move_count(self):
         """
-        Returns the number of halfmoves in the stack.
+        Returns the number of half moves in the stack.
         Zero (0) means no moves has been made.
         """
         return len(self._state_stack) - 1
 
     def get_current_move(self):
         """
-        Returns the current halfmove number. Zero (0) means before first move.
+        Returns the current half move number. Zero (0) means before first move.
         """
         return self._state_stack - 1
 
     def goto_move(self, move):
         """
-        Goto the specified halfmove. Zero (0) is before the first move.
+        Goto the specified half move. Zero (0) is before the first move.
         Return False if move is out of range.
         """
         move += 1
@@ -1006,7 +991,7 @@ class ChessBoard:
         If this method returns False you can use the get_reason method to determin why.
         """
         self._reason = 0
-        #                piece,from,to,take,promotion,check,specialmove
+        #                piece,from,to,take,promotion,check,special move
         self._cur_move = [None, None, None, False, None, None, self.NORMAL_MOVE]
 
         if self._game_result:
@@ -1021,27 +1006,27 @@ class ChessBoard:
         self._cur_move[1] = from_pos
         self._cur_move[2] = toPos
 
-        #check invalid coordinates
+        # check invalid coordinates
         if fx < 0 or fx > 7 or fy < 0 or fy > 7:
             self._reason = self.INVALID_FROM_LOCATION
             return False
 
-        #check invalid coordinates
+        # check invalid coordinates
         if tx < 0 or tx > 7 or ty < 0 or ty > 7:
             self._reason = self.INVALID_TO_LOCATION
             return False
 
-        #check if any move at all
+        # check if any move at all
         if fx == tx and fy == ty:
             self._reason = self.INVALID_TO_LOCATION
             return False
 
-        #check if piece on location
+        # check if piece on location
         if self.is_free(fx, fy):
             self._reason = self.INVALID_FROM_LOCATION
             return False
 
-        #check color of piece
+        # check color of piece
         if self.get_color(fx, fy) != self._turn:
             self._reason = self.INVALID_COLOR
             return False
@@ -1166,42 +1151,6 @@ class ChessBoard:
             return self.add_move((fx, fy), (tx, ty))
 
         return self.handle_incomplete_move(res)
-
-    # This method seems to be unused or at least ineffective
-    # Can be removed if it is indeed unnecessary
-    def handle_incomplete_move(self, res):
-        piece, fx, fy, tx, ty, promo = res
-        if self._turn == self.BLACK:
-            piece = piece.lower()
-
-        move_to = None
-        move_from = None
-        found_move = False
-        for y in range(8):
-            for x in range(8):
-                if self._board[y][x] == piece:
-                    if fx > -1 and fx != x:
-                        continue
-
-                    if fy > -1 and fy != y:
-                        continue
-
-                    vm = self.get_valid_moves((x, y))
-                    for m in vm:
-                        if m[0] == tx and m[1] == ty:
-                            if found_move:
-                                self._reason = self.AMBIGUOUS_MOVE
-                                return False
-                            found_move = True
-                            move_from = (x, y)
-                            move_to = (tx, ty)
-
-        if found_move:
-            return self.add_move(move_from, move_to)
-
-        self._reason = self.INVALID_MOVE
-        return False
-
 
     def get_all_text_moves(self, format=1):
         """
