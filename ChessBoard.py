@@ -648,7 +648,7 @@ class ChessBoard:
         self._board[fromPos[1]][fromPos[0]] = "."
         return True
 
-    def _parseTextMove(self, txt):
+    def _parse_text_move(self, txt):
 
         txt = txt.strip()
         promotion = None
@@ -788,7 +788,7 @@ class ChessBoard:
         return res
 
     #----------------------------------------------------------------------------
-    # addMoveTHODS
+    # PUBLIC METHODS
     #----------------------------------------------------------------------------
 
     def resetBoard(self):
@@ -992,7 +992,7 @@ class ChessBoard:
         self.loadCurState()
         return True
 
-    def setPromotion(self, promotion):
+    def set_promotion(self, promotion):
         """
         Tell the chessboard how to promote a pawn.
         1=QUEEN, 2=ROOK, 3=KNIGHT, 4=BISHOP
@@ -1224,12 +1224,12 @@ class ChessBoard:
 
     def getLastMove(self):
         """
-        Returns a tupple containing two tupples describing the move just made using the internal coordinates.
+        Returns a tuple containing two tuples describing the move just made using the internal coordinates.
         In the format ((from_x, from_y), (to_x, to_y))
         Ex. ((4, 6), (4, 4))
         Returns None if no moves has been made.
         """
-        if self._state_stack_pointer<=1: # No move has been done at thos pointer
+        if self._state_stack_pointer <= 1:  # No move has been done at that pointer
             return None
 
         self.undo()
@@ -1239,14 +1239,14 @@ class ChessBoard:
 
         return res
 
-    def addTextMove(self, txt):
+    def add_text_move(self, txt):
         """
         Adds a move using several different standards of the Algebraic chess notation.
         AN Examples: 'e2e4' 'f1d1' 'd7-d8' 'g1-f3'
         SAN Examples: 'e4' 'Rfxd1' 'd8=Q' 'Nxf3+'
         LAN Examples: 'Pe2e4' 'Rf1xd1' 'Pd7d8=Q' 'Ng1xf3+'
         """
-        res = self._parseTextMove(txt)
+        res = self._parse_text_move(txt)
         if not res:
             self._reason = self.INVALID_MOVE
             return False
@@ -1254,7 +1254,7 @@ class ChessBoard:
             piece, fx, fy, tx, ty, promo = res
 
         if promo:
-            self.setPromotion(promo)
+            self.set_promotion(promo)
 
         if not piece:
             return self.addMove((fx, fy), (tx, ty))
@@ -1262,16 +1262,17 @@ class ChessBoard:
         if self._turn == self.BLACK:
             piece = piece.lower()
 
-        move_to = None
-        move_from = None
+        move_to, move_from = None
         found_move = False
         for y in range(8):
             for x in range(8):
                 if self._board[y][x] == piece:
                     if fx > -1 and fx != x:
                         continue
+
                     if fy > -1 and fy != y:
                         continue
+
                     vm = self.getValidMoves((x, y))
                     for m in vm:
                         if m[0] == tx and m[1] == ty:
@@ -1356,17 +1357,17 @@ class ChessBoard:
 if __name__ == "__main__":
     cb = ChessBoard()
     cb.printBoard()
-    cb.addTextMove('e2e4')
+    cb.add_text_move('e2e4')
     cb.printBoard()
-    cb.addTextMove('f7f5')
+    cb.add_text_move('f7f5')
     cb.printBoard()
-    cb.addTextMove('e4f5')
+    cb.add_text_move('e4f5')
     cb.printBoard()
-    cb.addTextMove('g8h6')
+    cb.add_text_move('g8h6')
     cb.printBoard()
-    cb.addTextMove('f1d3')
+    cb.add_text_move('f1d3')
     cb.printBoard()
-    cb.addTextMove('h6f5')
+    cb.add_text_move('h6f5')
     cb.printBoard()
-    cb.addTextMove('d3f5')
+    cb.add_text_move('d3f5')
     cb.printBoard()
