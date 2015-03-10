@@ -6,9 +6,7 @@
 # Have fun!
 #####################################################################
 
-from copy import deepcopy
-from pprint import pprint
-
+from ChessboardFENHandler import *
 
 class ChessBoard:
 
@@ -820,114 +818,11 @@ class ChessBoard:
         self.pushState()
         self.updateKingLocations()
 
-    def setFEN(self, fen):
-        """
-        Sets the board and states accoring from a Forsyth-Edwards Notation string.
-        Ex. 'rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'
-        """
-        self._three_rep_stack = []
-        self._state_stack = []
-        self._moves = []
-        self._reason = 0
-        self._game_result = 0
+    def set_fen_code(self, fen):
+        ChessboardFENHandler.set_fen_code(self, fen)
 
-        fparts = fen.split()
-        newstate = ""
-
-        #BOARD
-        for c in fparts[0]:
-            if c in "kqrnbpKQRNBP":
-                newstate += c
-            elif c in "12345678":
-                newstate += '.' * int(c)
-        #TURN
-        newstate += str("wb".index(fparts[1]))
-
-        #CASTLING
-        kq = "KQkq"
-        for p in kq:
-            if p in fparts[2]:
-                newstate += "1"
-            else:
-                newstate += "0"
-
-        #EN PASSANT
-        if len(fparts[3]) == 2:
-            newstate += str("abcdefgh".index(fparts[3][0].lower()))
-            newstate += str("87654321".index(fparts[3][1]))
-        else:
-            newstate += "00"
-
-        #GAME RESULT
-        newstate+="0"
-
-        #HALF COUNT
-        newstate+=":%s" % fparts[4]
-
-        self._state_stack.append(newstate)
-        self._state_stack_pointer = 1
-        self.loadCurState()
-
-        three_state = [self._white_king_castle,
-            self._white_queen_castle,
-            self._black_king_castle,
-            self._black_queen_castle,
-            deepcopy(self._board),
-            deepcopy(self._ep)]
-
-        self._three_rep_stack.append(three_state)
-
-        self.updateKingLocations()
-
-    def getFEN(self):
-        """
-        Returns the current state as Forsyth-Edwards Notation string.
-        """
-        s = self._state_stack[self._state_stack_pointer-1]
-
-        b= s[:64]
-        v = s[64:72]
-        fifty =  s[73:]
-
-        rows = []
-        for i in range(8):
-            row = b[i*8:(i+1)*8]
-            cnt = 0; res = ""
-            for c in row:
-                if c == ".":
-                    cnt+=1
-                else:
-                    if cnt:
-                        res += str(cnt);
-                        cnt=0
-                    res+=c
-            if cnt:
-                res += str(cnt)
-            rows.append(res)
-        board = "/".join(rows)
-
-        turn = (["w", "b"])[int(v[0])]
-
-        kq = ""
-        if int(v[1]): kq+="K"
-        if int(v[2]): kq+="Q"
-        if int(v[3]): kq+="k"
-        if int(v[4]): kq+="q"
-        if not kq:
-            kq = "-"
-
-        x = int(v[5])
-        y = int(v[6])
-        ep = "-"
-        if not (x == 0 and y == 0):
-            if turn == "b" and (self._board[y][x-1] == 'p' or self._board[y][x+1] == 'p'):
-                ep = "%s%s" % ( ("abcdefgh")[x], ("87654321")[y+1])
-            elif turn == "w" and (self._board[y][x-1] == 'P' or self._board[y][x+1] == 'P'):
-                ep = "%s%s" % ( ("abcdefgh")[x], ("87654321")[y-1])
-
-        move = (self._state_stack_pointer+1)/2
-
-        return "%s %s %s %s %s %d" % (board, turn, kq, ep, fifty, move)
+    def get_fen_code(self):
+        return ChessboardFENHandler.generate_fen_code(self)
 
     def getMoveCount(self):
         """
