@@ -2,7 +2,7 @@ import unittest
 from ChessBoard import ChessBoard
 
 
-class OmarTests(unittest.TestCase):
+class FENTests(unittest.TestCase):
 
     """
         FEN correct strings are provided from http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation

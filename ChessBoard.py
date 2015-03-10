@@ -718,7 +718,7 @@ class ChessBoard:
 
         return (h_piece, h_file, h_rank, dest_x, dest_y, promotion)
 
-    def _formatTextMove(self, move, format):
+    def _formatTextMove(self, move, text_format):
         #piece, from, to, take, promotion, check
 
         piece = move[0]
@@ -731,9 +731,9 @@ class ChessBoard:
 
         files = "abcdefgh"
         ranks = "87654321"
-        if format == self.AN:
+        if text_format == self.AN:
             res = "%s%s%s%s" % (files[fpos[0]], ranks[fpos[1]], files[tpos[0]], ranks[tpos[1]])
-        elif format == self.LAN:
+        elif text_format == self.LAN:
 
             if special == self.KING_CASTLE_MOVE:
                 return "O-O"
@@ -790,6 +790,9 @@ class ChessBoard:
                 hint_f = files[fx]
             res = "%s%s%s%s%s%s%s%s" % (piece, hint_f, hint_r, tc, files[tpos[0]], ranks[tpos[1]], pt, check)
         return res
+
+    def has_previous_moves(self):
+        return self._state_stack_pointer <= 1
 
     #----------------------------------------------------------------------------
     # PUBLIC METHODS
@@ -876,8 +879,9 @@ class ChessBoard:
         Undo the last move. Can be used to step back until the initial board setup.
         Returns True or False if no more moves can be undone.
         """
-        if self._state_stack_pointer <= 1:
+        if self.has_previous_moves():
             return False
+
         self._state_stack_pointer -= 1
         self.load_cur_state()
         return True
@@ -1130,7 +1134,7 @@ class ChessBoard:
         Ex. ((4, 6), (4, 4))
         Returns None if no moves has been made.
         """
-        if self._state_stack_pointer <= 1:  # No move has been done at that pointer
+        if self.has_previous_moves():
             return None
 
         self.undo()
@@ -1204,7 +1208,7 @@ class ChessBoard:
         Returns a list of all moves done so far in Algebraic chess notation.
         Returns None if no moves has been made.
         """
-        if self._state_stack_pointer <= 1:  # No move has been done at this pointer
+        if self.has_previous_moves():  # No move has been done at this pointer
             return None
 
         res = []
@@ -1224,20 +1228,23 @@ class ChessBoard:
 
         return res
 
-    def get_last_text_moves(self, format=1):
+    def get_last_text_move(self, string_format=1):
         """
         Returns the latest move as Algebraic chess notation.
         Returns None if no moves has been made.
         """
-        if self._state_stack_pointer <= 1:  # No move has been done at thos pointer
+        if self.has_previous_moves():  # No move has been done at this pointer
             return None
 
         self.undo()
-        move = self._moves[self._state_stack_pointer - 1]
-        res = self._formatTextMove(move, format)
+        move = self._moves[self._state_stack_pointer-1]
+        res = self._formatTextMove(move, string_format)
         self.redo()
         return res
 
+    """
+        Printing
+    """
     def print_board(self):
         """
         Print the current board layout.
@@ -1250,19 +1257,8 @@ class ChessBoard:
         print "  +-----------------+"
         print "    A B C D E F G H"
 
-    def print_last_text_move(self, format=1):
-        """
-        Prints the latest move as Algebraic chess notation.
-        Print None if no moves has been made.
-        """
-        if self._state_stack_pointer <= 1:  # No move has been done at this pointer
-            print 'Changed'
-
-        self.undo()
-        move = self._moves[self._state_stack_pointer - 1]
-        res = self._formatTextMove(move, format)
-        self.redo()
-        print res
+    def print_last_text_move(self, string_format=1):
+        print self.get_last_text_move(string_format)
 
 
 if __name__ == "__main__":
