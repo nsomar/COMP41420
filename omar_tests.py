@@ -8,8 +8,8 @@ class OmarTests(unittest.TestCase):
         self.cb = ChessBoard()
 
     def testThatFirstTurnIsWhite(self):
-        assert self.cb.getTurn() == self.cb.WHITE
+        assert self.cb.get_turn() == self.cb.WHITE
 
     def testThatAfterWhiteMoveTheTurnIsBlack(self):
         self.cb.add_text_move('e2e4')
-        assert self.cb.getTurn() == self.cb.BLACK
+        assert self.cb.get_turn() == self.cb.BLACK
